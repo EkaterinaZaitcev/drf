@@ -28,6 +28,9 @@ class Lesson(models.Model):
     name = models.CharField(
         max_length=255, verbose_name="Название урока", help_text="Укажите урок"
     )
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, verbose_name="Курс", help_text="Выберите курс"
+    )
     description = models.TextField(
         blank=True,
         null=True,
