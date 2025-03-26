@@ -1,0 +1,10 @@
+[{"model": "materials.lesson",
+  "pk": 2,
+  "fields":
+  {"name": "?????? ????",
+    "course": 2,
+    "description": null,
+    "preview": "",
+    "video_link": null}
+}
+]
