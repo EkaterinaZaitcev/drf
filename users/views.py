@@ -5,6 +5,7 @@ from rest_framework.filters import OrderingFilter
 from tutorial.quickstart.serializers import UserSerializer
 
 from users.models import User, Payment
+from users.serializers import PaymentSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
