@@ -69,7 +69,7 @@ class Payment(models.Model):
         ("card", "Карта"),
         ("cash", "Наличные"),
     ]
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="payments", verbose_name="Пользователь")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="payments", verbose_name="Пользователь")
     payment_date = models.DateField(auto_now_add=True, verbose_name="Дата оплаты")
     payment_course = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE,
                                     verbose_name="Оплаченный курс")

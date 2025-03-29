@@ -17,11 +17,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
     ordering_fields = ('payment_date',)
 
 
-class UserCreateAPIView(CreateAPIView):
-    serializer_class = UserSerializer
+class CustomsUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-
-    def perform_create(self, serializer):
-        user = serializer.save(is_active=True)
-        user.set_password(user.password)
-        user.save()
+    serializer_class = UserSerializer
