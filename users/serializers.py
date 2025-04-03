@@ -19,3 +19,17 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomsUser
         fields = "__all__"
+
+
+class CustomsUserSerializer(ModelSerializer):
+    class Meta:
+        model = CustomsUser
+        fields = "__all__"
+
+
+class CustomsUserDetailSerializer(ModelSerializer):
+    payment_history = PaymentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = CustomsUser
+        fields = ["id", "email", "phone_number", "avatar", "city", "payment_history"]

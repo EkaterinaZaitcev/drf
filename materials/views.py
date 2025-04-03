@@ -13,6 +13,26 @@ class CourseViewSets(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return CourseDetailSerializer
+        return CourseSerializer
+
+    def get_permissions(self):
+        if self.action == "create":
+            self.permission_classes = (~IsModers,)
+        elif self.action in ["update", "retrieve"]:
+            self.permission_classes = (IsModers | IsOwner,)
+        elif self.action == "destroy":
+            self.permission_classes = (~IsModers | IsOwner,)
+
+        return super().get_permissions()
+
+    def perform_create(self, serializer):
+        course = serializer.save()
+        course.owner = self.request.user
+        course.save()
+
 
 """CRUD для модели урока по Generic"""
 
