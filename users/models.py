@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class User(AbstractUser):
+class CustomsUser(AbstractUser):
     username = None
     email = models.EmailField(
         unique=True, verbose_name="Почта", help_text="Укажите почту"
@@ -69,7 +69,7 @@ class Payment(models.Model):
         ("card", "Карта"),
         ("cash", "Наличные"),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="payments", verbose_name="Пользователь")
+    user = models.ForeignKey(CustomsUser, on_delete=models.CASCADE, blank=True, null=True, related_name="payments", verbose_name="Пользователь")
     payment_date = models.DateField(auto_now_add=True, verbose_name="Дата оплаты")
     payment_course = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE,
                                     verbose_name="Оплаченный курс")
