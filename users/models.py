@@ -6,7 +6,7 @@ from materials.models import Course, Lesson
 
 class CustomUser(AbstractUser):
 
-    username = None
+    username = models.CharField(max_length=50, blank=True, unique=False)
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     avatar = models.ImageField(upload_to="photo/avatars/", blank=True, null=True)
@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username', ]
 
     class Meta:
         verbose_name = "Пользователь"

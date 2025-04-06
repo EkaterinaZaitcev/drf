@@ -10,25 +10,23 @@ from users.permissions import IsModers, IsOwner
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
 
-    def get_serializer_class(self):
-        if self.action == "retrieve":
-            return CourseDetailSerializer
-        return CourseSerializer
-
     def get_permissions(self):
         if self.action == "create":
             self.permission_classes = (~IsModers,)
-        elif self.action in ["update", "retrieve"]:
-            self.permission_classes = (IsModers | IsOwner,)
         elif self.action == "destroy":
             self.permission_classes = (~IsModers | IsOwner,)
-
+        else:
+            self.permission_classes = (IsModers | IsOwner,)
         return super().get_permissions()
 
     def perform_create(self, serializer):
-        course = serializer.save()
-        course.owner = self.request.user
+        course = serializer.save(owner=self.request.user)
         course.save()
+
+    def get_queryset(self):
+        if not IsModers().has_permission(self.request, self):
+            return Course.objects.filter(owner=self.request.user)
+        return Course.objects.all()
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
