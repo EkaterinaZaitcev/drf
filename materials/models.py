@@ -1,14 +1,25 @@
 from django.db import models
 
+from config import settings
+
 
 class Course(models.Model):
     """Модель курс"""
 
-    title = models.CharField(max_length=150, verbose_name="название")
-    picture = models.ImageField(upload_to="images/", verbose_name="превью(картинка)", blank=True, null=True)
-    description = models.TextField(max_length=350, verbose_name="название")
+    name = models.CharField(
+        max_length=255, verbose_name="Название курса", help_text="Укажите курс"
+    )
+    preview = models.ImageField(
+        upload_to="materials/preview", verbose_name="Превью", blank=True, null=True
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Описание курса",
+        help_text="Укажите описание курса",
+    )
     owner = models.ForeignKey(
-        "users.CustomsUser",
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -17,22 +28,38 @@ class Course(models.Model):
     )
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = "курс"
         verbose_name_plural = "курсы"
-        ordering = ["title"]
+        ordering = ["name"]
 
 
 class Lesson(models.Model):
-    title = models.CharField(max_length=150, verbose_name="название")
-    description = models.TextField(max_length=500, verbose_name="название")
-    picture = models.ImageField(upload_to="images/", verbose_name="превью(картинка)", blank=True, null=True)
-    video_link = models.URLField(blank=True, null=True)
-    course = models.ForeignKey(Course, related_name="lessons", on_delete=models.CASCADE)
+    name = models.CharField(
+        max_length=255, verbose_name="Название урока", help_text="Укажите урок"
+    )
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, verbose_name="Курс", help_text="Выберите курс", blank=True, null=True
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Описание урока",
+        help_text="Укажите описание урока",
+    )
+    preview = models.ImageField(
+        upload_to="materials/preview", verbose_name="Превью", blank=True, null=True
+    )
+    video_link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на видео",
+        help_text="Укажите ссылку на видео урока",
+    )
     owner = models.ForeignKey(
-        "users.CustomsUser",
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -41,9 +68,9 @@ class Lesson(models.Model):
     )
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = "урок"
         verbose_name_plural = "уроки"
-        ordering = ["title"]
+        ordering = ["name"]

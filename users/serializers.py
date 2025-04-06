@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from users.models import CustomsUser, Payments
+from users.models import CustomUser, Payments
 
 
 class PaymentsSerializer(ModelSerializer):
@@ -9,15 +9,15 @@ class PaymentsSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class CustomsUserDetailSerializer(ModelSerializer):
+class CustomUserDetailSerializer(ModelSerializer):
     payment_history = PaymentsSerializer(many=True, read_only=True)
 
     class Meta:
-        model = CustomsUser
+        model = CustomUser
         fields = ["id", "email", "phone_number", "avatar", "city", "payment_history"]
 
 
-class CustomsUserSerializer(ModelSerializer):
+class CustomUserSerializer(ModelSerializer):
     class Meta:
-        model = CustomsUser
+        model = CustomUser
         fields = "__all__"

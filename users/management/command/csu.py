@@ -1,11 +1,11 @@
 from django.core.management import BaseCommand
 
-from users.models import CustomsUser
+from users.models import CustomUser
 
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        user = CustomsUser.objects.create(email="admin@mail.ru")
+        user = CustomUser.objects.create(email="admin@mail.ru")
         user.is_staff = True
         user.is_active = True
         user.is_superuser = True

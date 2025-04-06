@@ -4,9 +4,9 @@ from django.db import models
 from materials.models import Course, Lesson
 
 
-class CustomsUser(AbstractUser):
-    username = None
+class CustomUser(AbstractUser):
 
+    username = None
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     avatar = models.ImageField(upload_to="photo/avatars/", blank=True, null=True)
@@ -35,7 +35,7 @@ class Payments(models.Model):
     PAYMENT_METHOD_CHOICES = [("наличные", "наличные"), ("перевод на счет", "перевод на счет")]
 
     user = models.ForeignKey(
-        CustomsUser,
+        CustomUser,
         verbose_name="Пользователь",
         blank=True,
         null=True,

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 
@@ -116,7 +117,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "users.CustomsUser"
+AUTH_USER_MODEL = "users.CustomUser"
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),

@@ -5,8 +5,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from users.models import CustomsUser, Payments
-from users.serializers import CustomsUserDetailSerializer, CustomsUserSerializer, PaymentsSerializer
+from users.models import CustomUser, Payments
+from users.serializers import CustomUserDetailSerializer, CustomUserSerializer, PaymentsSerializer
 
 
 class PaymentsViewSet(ModelViewSet):
@@ -17,14 +17,14 @@ class PaymentsViewSet(ModelViewSet):
     ordering_fields = ("payment_date",)
 
 
-class CustomsUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomsUser.objects.all()
-    serializer_class = CustomsUserDetailSerializer
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserDetailSerializer
 
 
-class CustomsUserCreateAPIView(CreateAPIView):
-    serializer_class = CustomsUserSerializer
-    queryset = CustomsUser.objects.all()
+class CustomUserCreateAPIView(CreateAPIView):
+    serializer_class = CustomUserSerializer
+    queryset = CustomUser.objects.all()
     permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
