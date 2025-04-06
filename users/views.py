@@ -8,7 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from tutorial.quickstart.serializers import UserSerializer
 
 from users.models import CustomUser, Payments
-from users.serializers import CustomUserDetailSerializer, CustomUserSerializer, PaymentsSerializer
+from users.serializers import PaymentsSerializer, UserBaseSerializer
 
 
 #class CustomUserViewSet(viewsets.ModelViewSet):
