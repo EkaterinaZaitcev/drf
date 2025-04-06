@@ -1,24 +1,25 @@
-from django_filters.rest_framework import DjangoFilterBackend, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
-from tutorial.quickstart.serializers import UserSerializer
+from rest_framework.viewsets import ModelViewSet
 
-from users.models import CustomsUser, Payment
-from users.serializers import PaymentSerializer, CustomsUserSerializer
+from users.models import CustomsUser, Payments
+from users.serializers import CustomsUserDetailSerializer, CustomsUserSerializer, PaymentsSerializer
 
 
-class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ('payment_course','payment_lesson','method',)
-    ordering_fields = ('payment_date',)
+class PaymentsViewSet(ModelViewSet):
+    queryset = Payments.objects.all()
+    serializer_class = PaymentsSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ("payment_method", "paid_course", "paid_lesson")
+    ordering_fields = ("payment_date",)
 
 
 class CustomsUserViewSet(viewsets.ModelViewSet):
     queryset = CustomsUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomsUserDetailSerializer
 
 
 class CustomsUserCreateAPIView(CreateAPIView):

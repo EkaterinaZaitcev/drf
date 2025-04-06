@@ -4,15 +4,13 @@ from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.apps import UsersConfig
-
-
-from users.views import PaymentViewSet, CustomsUserViewSet, CustomsUserCreateAPIView
+from users.views import CustomsUserCreateAPIView, CustomsUserViewSet, PaymentsViewSet
 
 router = SimpleRouter()
 
 
-router.register(r'payments', PaymentViewSet, basename='payments')
-router.register(r'users', CustomsUserViewSet, basename='users')
+router.register(r"payments", PaymentsViewSet, basename="payments")
+router.register(r"users", CustomsUserViewSet, basename="users")
 
 app_name = UsersConfig.name
 
