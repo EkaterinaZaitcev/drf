@@ -11,9 +11,9 @@ from users.models import CustomUser, Payments
 from users.serializers import CustomUserDetailSerializer, CustomUserSerializer, PaymentsSerializer
 
 
-class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserDetailSerializer
+#class CustomUserViewSet(viewsets.ModelViewSet):
+    #queryset = CustomUser.objects.all()
+    #serializer_class = CustomUserDetailSerializer
 
 
 class CustomUserCreateAPIView(CreateAPIView):
@@ -44,6 +44,11 @@ class CustomUserUpdateAPIView(generics.UpdateAPIView):
 class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
+
+    def get_serializer_class(self):
+        if self.kwargs.get("pk") == self.request.user.pk:
+            return UserSerializer
+        return UserBaseSerializer
 
 
 class PaymentsViewSet(ModelViewSet):
