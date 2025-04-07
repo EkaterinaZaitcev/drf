@@ -1,14 +1,18 @@
-from rest_framework import generics
+from rest_framework import generics, views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscribe
+from materials.paginators import MaterialsPaginator
 from materials.serializers import CourseDetailSerializer, CourseSerializer, LessonSerializer
 from users.permissions import IsModers, IsOwner
 
 
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
+    pagination_class = MaterialsPaginator
 
     def get_permissions(self):
         if self.action == "create":
@@ -29,6 +33,26 @@ class CourseViewSet(ModelViewSet):
         return Course.objects.all()
 
 
+class CourseSubscribeApiView(views.APIView):
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.kwargs.get("pk")
+        course_item = get_object_or_404 (Course, pk=course_id)
+
+        subs_item =self.request.data.get("subscribe")
+
+        # Если подписка у пользователя на этот курс есть - удаляем ее
+        if subs_item.exists():
+            subs_item.delete()
+            message = 'подписка удалена'
+        # Если подписки у пользователя на этот курс нет - создаем ее
+        else:
+            Subscribe.objects.create(user=user, course=course_item, )
+            message = 'подписка добавлена'
+        # Возвращаем ответ в API
+        return Response({"message": message})
+
+
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = (IsAuthenticated, ~IsModers)
@@ -41,6 +65,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = (IsAuthenticated, ~IsModers)
+    pagination_class = MaterialsPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
