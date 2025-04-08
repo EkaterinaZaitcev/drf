@@ -43,7 +43,7 @@ class CourseSubscribeApiView(views.APIView):
         course_id = self.kwargs.get("pk")
         course_item = get_object_or_404 (Course, pk=course_id)
 
-        subs_item =self.request.data.get("subscribe")
+        subs_item =self.request.data.get("course")
 
         # Если подписка у пользователя на этот курс есть - удаляем ее
         if subs_item.exists():
