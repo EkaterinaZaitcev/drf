@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from materials.models import Course, Lesson, Subscribe
 from materials.paginators import MaterialsPaginator
-from materials.serializers import CourseDetailSerializer, CourseSerializer, LessonSerializer
+from materials.serializers import CourseDetailSerializer, CourseSerializer, LessonSerializer, SubscribeSerializer
 from users.permissions import IsModers, IsOwner
 
 
@@ -34,6 +34,10 @@ class CourseViewSet(ModelViewSet):
 
 
 class CourseSubscribeApiView(views.APIView):
+    serializer_class = SubscribeSerializer
+    queryset = Subscribe.objects.all()
+    permission_classes = [IsAuthenticated]
+
     def post(self, *args, **kwargs):
         user = self.request.user
         course_id = self.kwargs.get("pk")
