@@ -5,7 +5,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
-from tutorial.quickstart.serializers import CustomUserSerializer
+from tutorial.quickstart.serializers import UserSerializer
 
 from users.models import CustomUser, Payments
 from users.serializers import PaymentsSerializer, CustomUserSerializer, UserBaseSerializer
@@ -17,7 +17,7 @@ from users.serializers import PaymentsSerializer, CustomUserSerializer, UserBase
 
 
 class CustomUserCreateAPIView(CreateAPIView):
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
@@ -29,7 +29,7 @@ class CustomUserCreateAPIView(CreateAPIView):
 
 class CustomUserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
 
 
 class CustomUserDestroyAPIView(generics.DestroyAPIView):
@@ -38,16 +38,16 @@ class CustomUserDestroyAPIView(generics.DestroyAPIView):
 
 class CustomUserUpdateAPIView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
 
 
 class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
 
     def get_serializer_class(self):
         if self.kwargs.get("pk") == self.request.user.pk:
-            return CustomUserSerializer
+            return UserSerializer
         return UserBaseSerializer
 
 

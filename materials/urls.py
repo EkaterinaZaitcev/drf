@@ -22,7 +22,7 @@ urlpatterns = [
     path("lesson/<int:pk>/", LessonRetrieveAPIView.as_view(), name="lesson-detail"),
     path("lesson/update/<int:pk>/", LessonUpdateAPIView.as_view(), name="lesson-update"),
     path("lesson/delete/<int:pk>/", LessonDestroyAPIView.as_view(), name="lesson-delete"),
-    path("course/subscribe/", CourseSubscribeApiView.as_view(), name="subscribe"),
+    path("course/subscribe/", CourseSubscribeApiView.as_view(), name="subscribe")
 ]
 
 urlpatterns += router.urls

@@ -1,4 +1,4 @@
-from rest_framework import generics, views
+from rest_framework import generics, views, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import get_object_or_404
@@ -10,7 +10,7 @@ from materials.serializers import CourseDetailSerializer, CourseSerializer, Less
 from users.permissions import IsModers, IsOwner
 
 
-class CourseViewSet(ModelViewSet):
+class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     pagination_class = MaterialsPaginator
 
