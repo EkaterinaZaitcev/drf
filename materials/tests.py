@@ -84,3 +84,10 @@ class SubscribeTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data["message"], "подписка добавлена")
+
+        data = {"course":self.course.pk}
+        response = (self.client.post(url, data))
+        data = response.json()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(data["message"], "подписка удалена")
