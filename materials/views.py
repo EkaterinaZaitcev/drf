@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from materials.models import Course, Lesson, Subscribe
 from materials.paginators import MaterialsPaginator
-from materials.serializers import CourseDetailSerializer, CourseSerializer, LessonSerializer, SubscribeSerializer
+from materials.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
 from users.permissions import IsModers, IsOwner
 
 
@@ -43,17 +43,20 @@ class CourseSubscribeApiView(views.APIView):
         user = self.request.user
         course_id = self.kwargs.get("pk")
         course_item = get_object_or_404 (Course, pk=course_id)
+        subs_item =self.queryset.filter("course")
 
-        subs_item =self.request.data.get("course")
+        # Если подписки у пользователя на этот курс нет - создаем ее
+        if subs_item:
+            Subscribe.objects.create(user=user, course=course_item)
+            Subscribe.save()
+            message = 'подписка добавлена'
 
         # Если подписка у пользователя на этот курс есть - удаляем ее
-        if subs_item.exists():
+        else:
+            subs_item.exists()
             subs_item.delete()
             message = 'подписка удалена'
-        # Если подписки у пользователя на этот курс нет - создаем ее
-        else:
-            Subscribe.objects.create(user=user, course=course_item, )
-            message = 'подписка добавлена'
+
         # Возвращаем ответ в API
         return Response({"message": message})
 

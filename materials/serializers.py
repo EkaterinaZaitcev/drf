@@ -6,12 +6,6 @@ from materials.models import Course, Lesson, Subscribe
 from materials.validators import URLValidator
 
 
-class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Course
-        fields = "__all__"
-
-
 class LessonSerializer(serializers.ModelSerializer):
     video_link = serializers.URLField(validators=[URLValidator])
 
@@ -20,20 +14,21 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CourseDetailSerializer(serializers.ModelSerializer):
-    number_of_lessons = SerializerMethodField()
+class CourseSerializer(serializers.ModelSerializer):
+    lessons_count = serializers.SerializerMethodField()
+    subscription = serializers.SerializerMethodField()
     lessons = LessonSerializer(many=True, read_only=True)
-    subscribe = SerializerMethodField()
 
-    def get_number_of_lessons(self, obj):
-        return obj.lessons.count()
+    def get_lessons_count(self, course):
+        return course.lessons.count()
 
-    def get_subscribe(self, obj):
-        return True if Subscribe.objects.filters(user=self.context["request"].user, course=obj.pk) else False
+    def get_subscription(self, course):
+        current_user = self.context.get("request", None).user
+        return course.course_subscription.filter(user=current_user).exists()
 
     class Meta:
         model = Course
-        fields = ["id", "name", "picture", "description", "owner", "number_of_lessons", "lessons"]
+        fields = "__all__"
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
