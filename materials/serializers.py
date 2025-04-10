@@ -13,7 +13,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    video_link = serializers.URLField(validators=[URLValidator()])
+    video_link = serializers.URLField(validators=[URLValidator])
 
     class Meta:
         model = Lesson
@@ -30,7 +30,6 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
     def get_subscribe(self, obj):
         return True if Subscribe.objects.filters(user=self.context["request"].user, course=obj.pk) else False
-
 
     class Meta:
         model = Course
