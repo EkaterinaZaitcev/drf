@@ -35,29 +35,27 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class CourseSubscribeApiView(views.APIView):
+    """Подписка на курс"""
+
     serializer_class = SubscribeSerializer
     queryset = Subscribe.objects.all()
     permission_classes = [IsAuthenticated]
 
-    def post(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+
         user = self.request.user
-        course_id = self.kwargs.get("pk")
-        course_item = get_object_or_404 (Course, pk=course_id)
-        subs_item =self.queryset.filter("course")
+        course_id = self.request.data.get("course")
+        course = get_object_or_404(Course, id=course_id)
 
-        # Если подписки у пользователя на этот курс нет - создаем ее
-        if subs_item:
-            Subscribe.objects.create(user=user, course=course_item)
-            Subscribe.save()
-            message = 'подписка добавлена'
+        subs_item = self.queryset.filter(user=user, course=course)
 
-        # Если подписка у пользователя на этот курс есть - удаляем ее
-        else:
-            subs_item.exists()
+        if subs_item.exists():
             subs_item.delete()
-            message = 'подписка удалена'
+            message = "подписка удалена"
+        else:
+            Subscribe.objects.create(user=user, course=course)
+            message = "подписка добавлена"
 
-        # Возвращаем ответ в API
         return Response({"message": message})
 
 

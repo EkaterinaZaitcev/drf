@@ -68,15 +68,19 @@ class SubscribeTestCase(APITestCase):
         self.user = CustomUser.objects.create(email='test@yandex.ru',)
         self.course = Course.objects.create(name='1 Course',
                                             owner=self.user)
+        self.lesson = Lesson.objects.create(name='Lesson 1',
+                                            course=self.course,
+                                            description='This is lesson 1',
+                                            video_link='http://www.youtube.com',
+                                            owner=self.user)
+        self.subscribe = Subscribe(user=self.user, course=self.course)
         self.client.force_authenticate(user=self.user)
 
-    def test_course_subscribe(self):
-        url = reverse('materials:subscribe', args=(self.course.pk,))
-        body = {"subscribe": True}
-        request = self.client.post(url, body)
-        response = request.json()
-        print(response)
-        print(response.status_code)
+    def test_subscribe_create(self):
+        url = reverse('materials:subscribe')
+        data = {"course": self.course.pk}
+        response = self.client.post(url, data)
+        data = response.json()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.get("message"), "подписка добавлена")
+        self.assertEqual(data["message"], "подписка добавлена")

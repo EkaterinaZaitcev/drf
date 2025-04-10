@@ -88,3 +88,10 @@ class Subscribe(models.Model):
         verbose_name="Курс",
         help_text="Выберите курс",
     )
+
+    def __str__(self):
+        return f"{self.user.name} - {self.course.name}"
+
+    class Meta:
+        verbose_name = "Подписка на курс"
+        verbose_name_plural = "Подписки на курсы"
