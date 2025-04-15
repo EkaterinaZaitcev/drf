@@ -30,10 +30,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
+    'corsheaders',
     'users',
     'materials',
-    'corsheaders',
-
 ]
 
 MIDDLEWARE = [
@@ -124,3 +123,5 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "UPDATE_LAST_LOGIN": True,
 }
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY_ENV")

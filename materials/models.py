@@ -26,6 +26,12 @@ class Course(models.Model):
         verbose_name="владелец",
         help_text="укажите владельца",
     )
+    price = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True,
+        verbose_name='Цена курса'
+    )
 
     def __str__(self):
         return self.name

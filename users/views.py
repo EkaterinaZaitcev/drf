@@ -5,7 +5,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
-from tutorial.quickstart.serializers import UserSerializer
+from tutorial.quickstart.serializers import CustomUserSerializer
 
 from users.models import CustomUser, Payments
 from users.serializers import PaymentsSerializer, CustomUserSerializer, UserBaseSerializer
@@ -17,7 +17,7 @@ from users.serializers import PaymentsSerializer, CustomUserSerializer, UserBase
 
 
 class CustomUserCreateAPIView(CreateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
     permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
@@ -29,7 +29,7 @@ class CustomUserCreateAPIView(CreateAPIView):
 
 class CustomUserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
 
 
 class CustomUserDestroyAPIView(generics.DestroyAPIView):
@@ -38,22 +38,25 @@ class CustomUserDestroyAPIView(generics.DestroyAPIView):
 
 class CustomUserUpdateAPIView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
 
 
 class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomUserSerializer
 
     def get_serializer_class(self):
         if self.kwargs.get("pk") == self.request.user.pk:
-            return UserSerializer
+            return CustomUserSerializer
         return UserBaseSerializer
 
 
-class PaymentsViewSet(ModelViewSet):
-    queryset = Payments.objects.all()
+class PaymentsCreateAPIView(CreateAPIView):
     serializer_class = PaymentsSerializer
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ("payment_method", "paid_course", "paid_lesson")
-    ordering_fields = ("payment_date",)
+    queryset = Payments.objects.all()
+
+    def perform_create(self, serializer):
+        #filter_backends = [DjangoFilterBackend, OrderingFilter]
+        #filterset_fields = ("payment_method", "paid_course", "paid_lesson")
+        #ordering_fields = ("payment_date",)
+        pass

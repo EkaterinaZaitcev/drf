@@ -4,11 +4,11 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
 from materials.models import Course, Lesson, Subscribe
-from materials.validators import URLValidator
+from materials.validators import url_validator
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    video_link = serializers.URLField(validators=[URLValidator])
+    video_link = serializers.URLField(validators=[url_validator])
 
     class Meta:
         model = Lesson
