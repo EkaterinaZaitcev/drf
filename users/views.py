@@ -5,10 +5,12 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
-from tutorial.quickstart.serializers import CustomUserSerializer
+from tutorial.quickstart.serializers import UserSerializer
 
+from materials.models import Course
 from users.models import CustomUser, Payments
-from users.serializers import PaymentsSerializer, CustomUserSerializer, UserBaseSerializer
+from users.serializers import PaymentsSerializer, UserSerializer, UserBaseSerializer
+from users.services import create_stripe_price, create_stripe_session, create_product_stripe
 
 
 #class CustomUserViewSet(viewsets.ModelViewSet):
@@ -17,7 +19,7 @@ from users.serializers import PaymentsSerializer, CustomUserSerializer, UserBase
 
 
 class CustomUserCreateAPIView(CreateAPIView):
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
@@ -29,7 +31,7 @@ class CustomUserCreateAPIView(CreateAPIView):
 
 class CustomUserListAPIView(generics.ListAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
 
 
 class CustomUserDestroyAPIView(generics.DestroyAPIView):
@@ -38,16 +40,16 @@ class CustomUserDestroyAPIView(generics.DestroyAPIView):
 
 class CustomUserUpdateAPIView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
 
 
 class CustomUserRetrieveAPIView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
 
     def get_serializer_class(self):
         if self.kwargs.get("pk") == self.request.user.pk:
-            return CustomUserSerializer
+            return UserSerializer
         return UserBaseSerializer
 
 
@@ -56,7 +58,14 @@ class PaymentsCreateAPIView(CreateAPIView):
     queryset = Payments.objects.all()
 
     def perform_create(self, serializer):
-        #filter_backends = [DjangoFilterBackend, OrderingFilter]
-        #filterset_fields = ("payment_method", "paid_course", "paid_lesson")
-        #ordering_fields = ("payment_date",)
-        pass
+        payment = serializer.save(user=self.request.user)
+        course_id = self.request.data.get('course_id')
+        course = Course.objects.all().get(id=course_id)
+        course_title = course.title
+        course_price = course.price
+        stripe_product_id = create_product_stripe(course_title)
+        stripe_price = create_stripe_price(stripe_product_id, course_price)
+        session_id, payment_link = create_stripe_session(stripe_price)
+        payment.session_id = session_id
+        payment.link = payment_link
+        payment.save()
