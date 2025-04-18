@@ -1,6 +1,5 @@
-from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import generics, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -9,9 +8,10 @@ from tutorial.quickstart.serializers import UserSerializer
 
 from materials.models import Course
 from users.models import CustomUser, Payments
-from users.serializers import PaymentsSerializer, UserSerializer, UserBaseSerializer
-from users.services import create_stripe_price, create_stripe_session, create_product_stripe
-
+from users.serializers import (PaymentsSerializer, UserBaseSerializer,
+                               UserSerializer)
+from users.services import (create_product_stripe, create_stripe_price,
+                            create_stripe_session)
 
 #class CustomUserViewSet(viewsets.ModelViewSet):
     #queryset = CustomUser.objects.all()

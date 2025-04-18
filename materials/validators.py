@@ -1,5 +1,7 @@
-from rest_framework import serializers
 from urllib.parse import urlparse
+
+from rest_framework import serializers
+
 
 def url_validator(value):
         """Валидатор на проверку сторонних ссылок кроме YouTube"""

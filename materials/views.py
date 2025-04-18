@@ -1,14 +1,16 @@
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, views, viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet
-from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from materials.models import Course, Lesson, Subscribe
 from materials.paginators import MaterialsPaginator
-from materials.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
+from materials.serializers import (CourseDetailSerializer, CourseSerializer,
+                                   LessonSerializer, SubscribeSerializer)
+from materials.tasks import last_login, send_mail_course_update
 from users.permissions import IsModers, IsOwner
 
 
@@ -20,6 +22,15 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     pagination_class = MaterialsPaginator
 
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return CourseDetailSerializer
+        return CourseSerializer
+
+    def perform_update(self, serializer):
+        updated_course = serializer.save()
+        send_mail_course_update.delay(updated_course)
+        updated_course.save()
 
     def get_permissions(self):
         if self.action == "create":
