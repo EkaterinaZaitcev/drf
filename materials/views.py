@@ -10,7 +10,7 @@ from materials.models import Course, Lesson, Subscribe
 from materials.paginators import MaterialsPaginator
 from materials.serializers import (CourseDetailSerializer, CourseSerializer,
                                    LessonSerializer, SubscribeSerializer)
-from materials.tasks import last_login, send_mail_course_update
+from materials.tasks import send_mail_course_update
 from users.permissions import IsModers, IsOwner
 
 

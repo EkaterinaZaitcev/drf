@@ -136,7 +136,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BEAT_SCHEDULE = {
     "task-last_login": {
         "task": 'users.tasks.last_login',  # Путь к задаче
-        'schedule': timedelta(minutes=1),  # Расписание выполнения задачи (например, каждые 10 минут)
+        'schedule': timedelta(days=1),  # Расписание выполнения задачи (например, каждые 10 минут)
     },
 }
 
