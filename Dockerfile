@@ -1,13 +1,9 @@
-FROM ubuntu:latest
-LABEL authors="katya"
-
-ENTRYPOINT ["top", "-b"]
-
 # Указываем базовый образ
-FROM python:3.9
+FROM python:3.12
 
 # Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
+
 
 # Копируем файл с зависимостями и устанавливаем их
 COPY requirements.txt ./
