@@ -11,8 +11,9 @@ services:
                     python manage.py runserver 0.0.0.0:8000"
         ports:
             - "8000:8000"
+        restart: always
         env_file:
-            - .env
+            - ./.env
         volumes:
             - .:/code
         depends_on:
@@ -23,12 +24,9 @@ services:
     db:
         image: postgres:16
         container_name: postgres_db
-        #command:
-            #- CREATE DATABASE: drf_django
         env_file:
-            - .env
-        ports:
-          - "5432:5432"
+            - ./.env
+        restart: always
         volumes:
             - postgres_data:/var/lib/postgresql/data
         networks:
@@ -39,9 +37,11 @@ services:
         ports:
             - "6379:6379"
         env_file:
-            - .env
+            - ./.env
         volumes:
             - redis_data:/data
+        networks:
+            - app_network
     celery:
         build:
             context: .
@@ -49,12 +49,14 @@ services:
         command:
             celery -A config worker -l INFO
         env_file:
-            - .env
+            - ./.env
         volumes:
             - .:/app
         depends_on:
             - db
             - redis
+        networks:
+            - app_network
 
     celery_beat:
         build:
@@ -63,13 +65,15 @@ services:
         command:
             celery -A config beat --loglevel=INFO
         env_file:
-            - .env
+            - ./.env
         volumes:
             - .:/app
         depends_on:
             - db
             - redis
             - celery
+        networks:
+            - app_network
 networks:
     app_network:
         driver: bridge
