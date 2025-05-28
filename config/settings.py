@@ -154,3 +154,11 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost", 'http://158.160.93.42']
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE':'django.db.backends.sqlite3',
+            'NAME':BASE_DIR/ 'test_db.sqlite3',
+        }
+    }
