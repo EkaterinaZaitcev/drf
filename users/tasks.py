@@ -1,7 +1,7 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
 
 from celery import shared_task
-from celery.utils.time import timezone
+
 from dateutil.utils import today
 
 from users.models import CustomUser
