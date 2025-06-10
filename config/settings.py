@@ -1,4 +1,4 @@
-import os
+import os, sys, time
 from datetime import timedelta
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
-    'corsheaders',
+    #'corsheaders',
     'django_celery_beat',
     'users',
     'materials',
@@ -109,9 +109,15 @@ USE_I18N = True
 USE_TZ = True
 
 
+"""STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]"""
+
+
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -155,10 +161,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost", 'http://158.160.93.42']
 
-if 'test' in sys.argv:
+if "test" in sys.argv:
     DATABASES = {
-        'default': {
-            'ENGINE':'django.db.backends.sqlite3',
-            'NAME':BASE_DIR/ 'test_db.sqlite3',
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
