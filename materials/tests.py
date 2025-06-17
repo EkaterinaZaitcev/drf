@@ -66,13 +66,13 @@ class MaterialsTestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {
-                "id": 4,
+                "id": 1,
                 "name": "Lesson 2",
-                "course": 3,
+                "course": 1,
                 "description": "This is lesson 2",
                 "preview": None,
                 "video_link": "http://www.youtube.com",
-                "owner": 3,
+                "owner": 1,
             },
         )
 

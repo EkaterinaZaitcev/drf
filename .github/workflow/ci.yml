@@ -21,7 +21,6 @@ jobs:
 
     - name: Run Flake8
       run:  flake8 .
-      exclude: E501
 
   test:
     needs: lint
