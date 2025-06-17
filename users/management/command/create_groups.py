@@ -13,4 +13,6 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(self.style.SUCCESS(f'Группа "{name}" была создана.'))
             else:
-                self.stdout.write(self.style.WARNING(f'Группа "{name}" уже существует.'))
+                self.stdout.write(
+                    self.style.WARNING(f'Группа "{name}" уже существует.')
+                )
