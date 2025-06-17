@@ -115,8 +115,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]"""
 
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 MEDIA_URL = "media/"
@@ -159,7 +159,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost", 'http://158.160.93.42']
+CSRF_TRUSTED_ORIGINS = ["http://localhost", 'http://89.169.184.116']
 
 if "test" in sys.argv:
     DATABASES = {

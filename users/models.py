@@ -30,7 +30,6 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-
 class Payments(models.Model):
     PAYMENT_METHOD_CHOICES = [("наличные", "наличные"), ("перевод на счет", "перевод на счет")]
 
