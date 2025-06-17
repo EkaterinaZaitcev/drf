@@ -15,6 +15,6 @@ def send_mail_course_update(course_id):
         send_mail(
             from_email=EMAIL_HOST_USER,
             recipient_list=[sub.user.email],
-            message = f'Здравствуйте! Сообщаем, что в курсе "{course.name}" обновления!',
-            fail_silently=False
+            message=f'Здравствуйте! Сообщаем, что в курсе "{course.name}" обновления!',
+            fail_silently=False,
         )

@@ -8,14 +8,16 @@ from tutorial.quickstart.serializers import UserSerializer
 
 from materials.models import Course
 from users.models import CustomUser, Payments
-from users.serializers import (PaymentsSerializer, UserBaseSerializer,
-                               UserSerializer)
-from users.services import (create_product_stripe, create_stripe_price,
-                            create_stripe_session)
+from users.serializers import PaymentsSerializer, UserBaseSerializer, UserSerializer
+from users.services import (
+    create_product_stripe,
+    create_stripe_price,
+    create_stripe_session,
+)
 
-#class CustomUserViewSet(viewsets.ModelViewSet):
-    #queryset = CustomUser.objects.all()
-    #serializer_class = CustomUserDetailSerializer
+# class CustomUserViewSet(viewsets.ModelViewSet):
+# queryset = CustomUser.objects.all()
+# serializer_class = CustomUserDetailSerializer
 
 
 class CustomUserCreateAPIView(CreateAPIView):
@@ -59,7 +61,7 @@ class PaymentsCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user)
-        course_id = self.request.data.get('course_id')
+        course_id = self.request.data.get("course_id")
         course = Course.objects.all().get(id=course_id)
         course_title = course.title
         course_price = course.price

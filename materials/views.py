@@ -8,15 +8,22 @@ from rest_framework.viewsets import ModelViewSet
 
 from materials.models import Course, Lesson, Subscribe
 from materials.paginators import MaterialsPaginator
-from materials.serializers import (CourseDetailSerializer, CourseSerializer,
-                                   LessonSerializer, SubscribeSerializer)
+from materials.serializers import (
+    CourseDetailSerializer,
+    CourseSerializer,
+    LessonSerializer,
+    SubscribeSerializer,
+)
 from materials.tasks import send_mail_course_update
 from users.permissions import IsModers, IsOwner
 
 
-@method_decorator(name='list', decorator=swagger_auto_schema(
-    operation_description="description from swagger_auto_schema via method_decorator"
-))
+@method_decorator(
+    name="list",
+    decorator=swagger_auto_schema(
+        operation_description="description from swagger_auto_schema via method_decorator"
+    ),
+)
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -42,7 +49,6 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
 
     def get_queryset(self):
         if not IsModers().has_permission(self.request, self):

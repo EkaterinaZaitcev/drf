@@ -33,7 +33,8 @@ class UserSerializer(serializers.ModelSerializer):
             "phone_number",
             "city",
             "avatar",
-            )
+        )
+
 
 class UserBaseSerializer(serializers.ModelSerializer):
 

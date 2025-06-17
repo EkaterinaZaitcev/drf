@@ -27,10 +27,7 @@ class Course(models.Model):
         help_text="укажите владельца",
     )
     price = models.PositiveIntegerField(
-        default=0,
-        blank=True,
-        null=True,
-        verbose_name='Цена курса'
+        default=0, blank=True, null=True, verbose_name="Цена курса"
     )
 
     def __str__(self):
@@ -47,7 +44,12 @@ class Lesson(models.Model):
         max_length=255, verbose_name="Название урока", help_text="Укажите урок"
     )
     course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, verbose_name="Курс", help_text="Выберите курс", blank=True, null=True
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="Курс",
+        help_text="Выберите курс",
+        blank=True,
+        null=True,
     )
     description = models.TextField(
         blank=True,
@@ -80,6 +82,7 @@ class Lesson(models.Model):
         verbose_name = "урок"
         verbose_name_plural = "уроки"
         ordering = ["name"]
+
 
 class Subscribe(models.Model):
     user = models.ForeignKey(
